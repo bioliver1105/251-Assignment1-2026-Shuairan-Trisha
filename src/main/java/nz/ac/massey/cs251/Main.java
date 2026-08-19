@@ -2,6 +2,7 @@ package nz.ac.massey.cs251;
 
 import javax.swing.*;
 import java.awt.*;
+import javax.swing.ImageIcon;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -10,7 +11,7 @@ public class Main extends JFrame{
     private static final int Frame_HEIGHT = 600;
 
     private JTextArea textArea;
-    private JMenuItem selectText, copy, paste, cut;
+    private JMenuItem select, copy, paste, cut;
     private JLabel infoLabel;
 
     public Main(){
@@ -23,8 +24,11 @@ public class Main extends JFrame{
         this.setJMenuBar(MenuBar);
 
         JMenu fileMenu = new JMenu("File");
+        JMenu searchMenu = new JMenu("Search");
         JMenu viewMenu = new JMenu("View");
+        JMenu editMenu = new JMenu("Edit");
         JMenu helpMenu = new JMenu("Help");
+
 
         JMenuItem newItem = new JMenuItem("New");
         JMenuItem openItem = new JMenuItem("Open");
@@ -32,6 +36,11 @@ public class Main extends JFrame{
         JMenuItem printItem = new JMenuItem("Print");
         JMenuItem exportItem = new JMenuItem("Export as PDF");
         JMenuItem exitItem = new JMenuItem("Exit");
+        JMenuItem find = new JMenuItem(" ");
+        JMenuItem select = new JMenuItem("Select");
+        JMenuItem copy = new JMenuItem("Copy");
+        JMenuItem paste = new JMenuItem("Paste");
+        JMenuItem cut = new JMenuItem("Cut");
 
         JMenuItem dateTimeItem = new JMenuItem("Date & Time");
 
@@ -49,9 +58,18 @@ public class Main extends JFrame{
 
         helpMenu.add(aboutItem);
 
+        searchMenu.add(find);
+
+        editMenu.add(select);
+        editMenu.add(copy);
+        editMenu.add(paste);
+        editMenu.add(cut);
+
         MenuBar.add(fileMenu);
         MenuBar.add(viewMenu);
         MenuBar.add(helpMenu);
+        MenuBar.add(searchMenu);
+        MenuBar.add(editMenu);
 
 
 
@@ -59,8 +77,11 @@ public class Main extends JFrame{
         LocalDateTime time = LocalDateTime.now();
 
         infoLabel= new JLabel("Time & Date");
-        MenuBar.add(infoLabel);
+        viewMenu.add(infoLabel);
         infoLabel.setText("Time" + time);
+
+        ImageIcon searchIcon = new ImageIcon("search.png");
+        find.setIcon(searchIcon);
 
         this.setVisible(true);
     }
