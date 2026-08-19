@@ -3,8 +3,14 @@ package nz.ac.massey.cs251;
 import javax.swing.*;
 import java.awt.*;
 import javax.swing.ImageIcon;
+import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Highlighter;
 
 public class Main extends JFrame{
     private static final int Frame_WIDTH = 800;
@@ -14,11 +20,14 @@ public class Main extends JFrame{
     private JMenuItem select, copy, paste, cut;
     private JLabel infoLabel;
 
-    public Main(){
+    public Main() {
         super("Text Editor");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(Frame_WIDTH, Frame_HEIGHT);
         this.setResizable(true);
+
+        textArea = new JTextArea();
+        this.add(new JScrollPane(textArea));
 
         JMenuBar MenuBar = new JMenuBar();
         this.setJMenuBar(MenuBar);
@@ -72,19 +81,51 @@ public class Main extends JFrame{
         MenuBar.add(editMenu);
 
 
-
-
         LocalDateTime time = LocalDateTime.now();
 
-        infoLabel= new JLabel("Time & Date");
+        infoLabel = new JLabel("Time & Date");
         viewMenu.add(infoLabel);
         infoLabel.setText("Time" + time);
 
         ImageIcon searchIcon = new ImageIcon("search.png");
         find.setIcon(searchIcon);
+        find.addActionListener(e -> searchText());
 
         this.setVisible(true);
     }
+
+        private void searchText() {
+            String query = JOptionPane.showInputDialog(this, "Find:", "Search", JOptionPane.PLAIN_MESSAGE);
+            if (query == null || query.isEmpty()) return;
+
+            highlightAllMatches(query);
+        }
+
+        private void highlightAllMatches(String query) {
+            Highlighter highlighter = textArea.getHighlighter();
+            highlighter.removeAllHighlights();
+
+            String content = textArea.getText();
+            Highlighter.HighlightPainter painter =
+                    new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+
+            int index = 0;
+            int matchCount = 0;
+            try {
+                while ((index = content.indexOf(query, index)) != -1) {
+                    highlighter.addHighlight(index, index + query.length(), painter);
+                    index += query.length();
+                    matchCount++;
+                }
+            } catch (BadLocationException ex) {
+                ex.printStackTrace();
+            }
+
+            if (matchCount == 0) {
+                JOptionPane.showMessageDialog(this, "No matches found for \"" + query + "\"");
+            }
+        }
+
 
     public static void main(String[] args){ new Main(); }
 }
