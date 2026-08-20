@@ -126,6 +126,10 @@ public class Main extends JFrame{
             }
         });
 
+        select.addActionListener(e -> textArea.selectAll()); 
+        copy.addActionListener(e -> textArea.copy());
+        paste.addActionListener(e -> textArea.paste());
+        cut.addActionListener(e -> textArea.cut());
         aboutMenu.addActionListener(e -> {
             ImageIcon rawIcon = new ImageIcon("about-icon.png");
             Image scaledImage = rawIcon.getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
@@ -307,6 +311,7 @@ public class Main extends JFrame{
                 JOptionPane.showMessageDialog(this, "No matches found for \"" + query + "\"");
             }
         }
+
 
 
     public static void main(String[] args){ new Main(); }
