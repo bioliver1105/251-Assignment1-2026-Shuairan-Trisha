@@ -117,6 +117,10 @@ public class Main extends JFrame{
             }
         });
 
+        select.addActionListener(e -> textArea.selectAll()); 
+        copy.addActionListener(e -> textArea.copy());
+        paste.addActionListener(e -> textArea.paste());
+        cut.addActionListener(e -> textArea.cut());
 
         fileMenu.add(newItem);
         fileMenu.add(openItem);
@@ -188,6 +192,7 @@ public class Main extends JFrame{
                 JOptionPane.showMessageDialog(this, "No matches found for \"" + query + "\"");
             }
         }
+
 
 
     public static void main(String[] args){ new Main(); }
