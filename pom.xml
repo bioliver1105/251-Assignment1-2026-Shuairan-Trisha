@@ -34,7 +34,26 @@
                     <xmlOutputDirectory>${project.basedir}/reports/spotbugs</xmlOutputDirectory>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.24.0</version>
+                <configuration>
+                    <targetJdk>17</targetJdk>
+                    <rulesets>
+                        <ruleset>category/java/codestyle.xml</ruleset>
+                    </rulesets>
+                    <outputDirectory>${project.basedir}/reports/pmd</outputDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>pmd</id>
+                        <goals>
+                            <goal>pmd</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
-
 </project>
