@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
+import java.io.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Main extends JFrame{
     private static final int Frame_WIDTH = 800;
@@ -54,6 +56,67 @@ public class Main extends JFrame{
         JMenuItem dateTimeItem = new JMenuItem("Date & Time");
 
         JMenuItem aboutItem = new JMenuItem("About");
+
+        newItem.addActionListener(e -> {
+            int confirm = JOptionPane.showConfirmDialog(this,
+                    "Discard current text and start a new document?",
+                    "New", JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                textArea.setText("");
+            }
+        });
+
+        openItem.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileFilter(new FileNameExtensionFilter("Text Files (*.txt)", "txt"));
+
+            int result = fileChooser.showOpenDialog(this);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File file = fileChooser.getSelectedFile();
+                try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                    StringBuilder content = new StringBuilder();
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        content.append(line).append("\n");
+                    }
+                    textArea.setText(content.toString());
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(this, "Error opening file: " + ex.getMessage(),
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        saveItem.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileFilter(new FileNameExtensionFilter("Text Files (*.txt)", "txt"));
+
+            int result = fileChooser.showSaveDialog(this);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File file = fileChooser.getSelectedFile();
+                if (!file.getName().toLowerCase().endsWith(".txt")) {
+                    file = new File(file.getAbsolutePath() + ".txt");
+                }
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+                    writer.write(textArea.getText());
+                    JOptionPane.showMessageDialog(this, "File saved successfully.",
+                            "Save", JOptionPane.INFORMATION_MESSAGE);
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(this, "Error saving file: " + ex.getMessage(),
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        exitItem.addActionListener(e -> {
+            int confirm = JOptionPane.showConfirmDialog(this,
+                    "Are you sure you want to exit?",
+                    "Exit", JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                System.exit(0);
+            }
+        });
+
 
         fileMenu.add(newItem);
         fileMenu.add(openItem);
