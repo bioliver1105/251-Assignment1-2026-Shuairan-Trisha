@@ -23,4 +23,18 @@
     </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>4.10.3.0</version>
+                <configuration>
+                    <xmlOutput>true</xmlOutput>
+                    <xmlOutputDirectory>${project.basedir}/reports/spotbugs</xmlOutputDirectory>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
