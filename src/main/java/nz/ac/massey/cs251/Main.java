@@ -21,7 +21,7 @@ import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
 
 
 public class Main extends JFrame{
-    private static final int Frame_WIDTH = 500;
+    private static final int Frame_WIDTH = 800;
     private static final int Frame_HEIGHT = 500;
 
     private JTextArea textArea;
@@ -32,15 +32,23 @@ public class Main extends JFrame{
         super("Text Editor");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(Frame_WIDTH, Frame_HEIGHT);
-        this.setResizable(false);
+        this.setResizable(true);
+        this.setLocationRelativeTo(null);
 
         textArea = new JTextArea();
         this.add(new JScrollPane(textArea));
-
         textArea.setLineWrap(true);
+
+        textArea.setBackground(new Color(235,245,255));
+        textArea.setForeground(new Color(20,30,50));
+        textArea.setCaretColor(new Color(20, 30, 50));
+
 
         JMenuBar MenuBar = new JMenuBar();
         this.setJMenuBar(MenuBar);
+
+        MenuBar.setBackground(new Color(235, 245, 235));
+        MenuBar.setOpaque(true);
 
         JMenu fileMenu = new JMenu("File");
         JMenu searchMenu = new JMenu("Search");
@@ -48,6 +56,16 @@ public class Main extends JFrame{
         JMenu editMenu = new JMenu("Edit");
         JMenu helpMenu = new JMenu("Help");
 
+        fileMenu.setBackground(new Color(235,245,235));
+        fileMenu.setOpaque(true);
+        searchMenu.setBackground(new Color(235,245,235));
+        searchMenu.setOpaque(true);
+        viewMenu.setBackground(new Color(235,245,235));
+        viewMenu.setOpaque(true);
+        editMenu.setBackground(new Color(235,245,235));
+        editMenu.setOpaque(true);
+        helpMenu.setBackground(new Color(235,245,235));
+        helpMenu.setOpaque(true);
         fileMenu.setIcon(scaledIcon("file1.png"));
         searchMenu.setIcon(scaledIcon("search1.png"));
         viewMenu.setIcon(scaledIcon("view1.png"));
@@ -68,6 +86,8 @@ public class Main extends JFrame{
         JMenuItem paste = new JMenuItem("Paste");
         JMenuItem cut = new JMenuItem("Cut");
         JMenuItem aboutMenu = new JMenuItem("About");
+        aboutMenu.setBackground(new Color(235,245,235));
+        aboutMenu.setOpaque(true);
         aboutMenu.setIcon(scaledIcon("about1.png"));
         JMenuItem guideItem = new JMenuItem("How to Use");
 
@@ -133,7 +153,7 @@ public class Main extends JFrame{
             }
         });
 
-        select.addActionListener(e -> textArea.selectAll()); 
+        select.addActionListener(e -> textArea.selectAll());
         copy.addActionListener(e -> textArea.copy());
         paste.addActionListener(e -> textArea.paste());
         cut.addActionListener(e -> textArea.cut());
@@ -237,14 +257,6 @@ public class Main extends JFrame{
         });
 
 
-
-
-
-
-
-
-
-
         fileMenu.add(newItem);
         fileMenu.add(openItem);
         fileMenu.add(saveItem);
@@ -327,5 +339,12 @@ public class Main extends JFrame{
 
 
 
-    public static void main(String[] args){ new Main(); }
-}
+    public static void main(String[] args) {
+        try {
+            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        SwingUtilities.invokeLater(() -> new StartScreen());
+    }}
