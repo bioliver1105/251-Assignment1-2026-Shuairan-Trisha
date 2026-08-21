@@ -66,6 +66,12 @@ public class Main extends JFrame{
         editMenu.setOpaque(true);
         helpMenu.setBackground(new Color(235,245,235));
         helpMenu.setOpaque(true);
+        fileMenu.setIcon(scaledIcon("file1.png"));
+        searchMenu.setIcon(scaledIcon("search1.png"));
+        viewMenu.setIcon(scaledIcon("view1.png"));
+        editMenu.setIcon(scaledIcon("edit1.png"));
+        helpMenu.setIcon(scaledIcon("help1.png"));
+
 
 
         JMenuItem newItem = new JMenuItem("New");
@@ -82,6 +88,7 @@ public class Main extends JFrame{
         JMenuItem aboutMenu = new JMenuItem("About");
         aboutMenu.setBackground(new Color(235,245,235));
         aboutMenu.setOpaque(true);
+        aboutMenu.setIcon(scaledIcon("about1.png"));
         JMenuItem guideItem = new JMenuItem("How to Use");
 
 
@@ -290,6 +297,12 @@ public class Main extends JFrame{
         find.addActionListener(e -> searchText());
 
         this.setVisible(true);
+    }
+
+    private ImageIcon scaledIcon(String filename) {
+        ImageIcon rawIcon = new ImageIcon(filename);
+        Image scaled = rawIcon.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH);
+        return new ImageIcon(scaled);
     }
 
         private void searchText() {
