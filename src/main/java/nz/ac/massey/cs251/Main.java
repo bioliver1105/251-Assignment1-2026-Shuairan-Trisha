@@ -106,24 +106,40 @@ public class Main extends JFrame{
 
         openItem.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setFileFilter(new FileNameExtensionFilter("Text Files (*.txt)", "txt"));
+            fileChooser.setFileFilter(new FileNameExtensionFilter("Text Files (*.txt, *.rtf)", "txt", "rtf"));
 
             int result = fileChooser.showOpenDialog(this);
             if (result == JFileChooser.APPROVE_OPTION) {
                 File file = fileChooser.getSelectedFile();
-                try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-                    StringBuilder content = new StringBuilder();
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        content.append(line).append("\n");
+                String fileName = file.getName().toLowerCase();
+
+                try {
+                    if (fileName.endsWith(".rtf")) {
+                        javax.swing.text.rtf.RTFEditorKit rtfKit = new javax.swing.text.rtf.RTFEditorKit();
+                        javax.swing.text.Document rtfDoc = rtfKit.createDefaultDocument();
+                        try (FileInputStream fis = new FileInputStream(file)) {
+                            rtfKit.read(fis, rtfDoc, 0);
+                        }
+                        textArea.setText(rtfDoc.getText(0, rtfDoc.getLength()));
+                    } else {
+                        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                            StringBuilder content = new StringBuilder();
+                            String line;
+                            while ((line = reader.readLine()) != null) {
+                                content.append(line).append("\n");
+                            }
+                            textArea.setText(content.toString());
+                        }
                     }
-                    textArea.setText(content.toString());
                     applySyntaxHighlighting(textArea, profileForFile(file.getName()));
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(this, "Error opening file: " + ex.getMessage(),
-                            "Error", JOptionPane.ERROR_MESSAGE);
                 }
-            }
+                        catch(Exception ex){
+                        JOptionPane.showMessageDialog(this, "Error opening file: " + ex.getMessage(),
+                                "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+
+
         });
 
         saveItem.addActionListener(e -> {
