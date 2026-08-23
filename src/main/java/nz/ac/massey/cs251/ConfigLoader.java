@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Map;
 
+// Loads editor configuration (font,colors) from a YAML file, falling back to defaults if unavailable
 public class ConfigLoader {
 
     public String fontFamily = "Monospaced";

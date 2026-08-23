@@ -28,9 +28,10 @@ public class Main extends JFrame{
     private JTextPane textArea;
     private JMenuItem select, copy, paste, cut;
     private JLabel infoLabel;
-
+    // Constructor: builds the main editor window, menu bar, and holds all functionalities
     public Main() {
         super("Text Editor");
+        // Loads font/color settings from config.yml
         ConfigLoader config = new ConfigLoader("config.yml");
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -94,7 +95,7 @@ public class Main extends JFrame{
         JMenuItem guideItem = new JMenuItem("How to Use");
 
 
-
+        // New: clears the editor after user confirmation
         newItem.addActionListener(e -> {
             int confirm = JOptionPane.showConfirmDialog(this,
                     "Discard current text and start a new document?",
@@ -104,6 +105,7 @@ public class Main extends JFrame{
             }
         });
 
+        // Open: reads .txt files as plain text, .rtf files using RTFEditorKit
         openItem.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileFilter(new FileNameExtensionFilter("Text Files (*.txt, *.rtf)", "txt", "rtf"));
@@ -142,6 +144,7 @@ public class Main extends JFrame{
 
         });
 
+        // Save: writes the editor content to a .txt file
         saveItem.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileFilter(new FileNameExtensionFilter("Text Files (*.txt)", "txt"));
@@ -163,6 +166,7 @@ public class Main extends JFrame{
             }
         });
 
+        // Exit: confirms before closing application
         exitItem.addActionListener(e -> {
             int confirm = JOptionPane.showConfirmDialog(this,
                     "Are you sure you want to exit?",
@@ -176,6 +180,8 @@ public class Main extends JFrame{
         copy.addActionListener(e -> textArea.copy());
         paste.addActionListener(e -> textArea.paste());
         cut.addActionListener(e -> textArea.cut());
+
+        // About: shows team names and course info in a popup
         aboutMenu.addActionListener(e -> {
             ImageIcon rawIcon = new ImageIcon("about-icon.png");
             Image scaledImage = rawIcon.getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
@@ -192,6 +198,7 @@ public class Main extends JFrame{
                     aboutIcon);
         });
 
+        // Help: shows a quick usage guide for the menus
         guideItem.addActionListener(e -> {
             ImageIcon rawIcon = new ImageIcon("help-icon.png");
             Image scaledImage = rawIcon.getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
@@ -208,6 +215,7 @@ public class Main extends JFrame{
                     guideIcon);
         });
 
+        // Export as PDF: writes current text content to a new PDF file using PDFBox
         exportItem.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileFilter(new FileNameExtensionFilter("PDF Files (*.pdf)", "pdf"));
@@ -249,6 +257,7 @@ public class Main extends JFrame{
             }
         });
 
+        // Print: sends the content to the system rpint dialog
         printItem.addActionListener(e -> {
             try {
                 java.awt.print.PrinterJob job = java.awt.print.PrinterJob.getPrinterJob();
@@ -324,6 +333,7 @@ public class Main extends JFrame{
         return new ImageIcon(scaled);
     }
 
+    // Searches the text for a user-specified word and highlights all matches
     private void searchText() {
         String query = JOptionPane.showInputDialog(this, "Find:", "Search", JOptionPane.PLAIN_MESSAGE);
         if (query == null || query.isEmpty()) return;
@@ -394,6 +404,7 @@ public class Main extends JFrame{
 
     private record LanguageProfile(Set<String> keywords, Pattern commentPattern) {}
 
+    // Determines which languages keywords/comment style to use based on file extension
     static LanguageProfile profileForFile(String filename) {
         String lower = filename.toLowerCase();
         if (lower.endsWith(".java")) return new LanguageProfile(JAVA_KEYWORDS, SLASH_COMMENT);
@@ -404,6 +415,7 @@ public class Main extends JFrame{
         return null; // unrecognized extension — leave file uncolored
     }
 
+    // Applies syntax highlighting (keywords, strings, comments) to the given text pane
     static void applySyntaxHighlighting(JTextPane pane, LanguageProfile profile) {
         StyledDocument doc = pane.getStyledDocument();
 
@@ -448,6 +460,7 @@ public class Main extends JFrame{
         }
     }
 
+    // Entry point: sets the look and feel, then launches start screen
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");

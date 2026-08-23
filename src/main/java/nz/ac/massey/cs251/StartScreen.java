@@ -3,6 +3,7 @@ package nz.ac.massey.cs251;
 import javax.swing.*;
 import java.awt.*;
 
+// Displays a start screen with a Start button that opens the main editor window
 public class StartScreen extends JFrame {
 
     public StartScreen() {
