@@ -1,0 +1,8 @@
+editor:
+  font:
+    family: Monospaced
+    size: 14
+  colors:
+    textBackground: "235,245,255"
+    textForeground: "20,30,50"
+    menuBackground: "235,245,235"

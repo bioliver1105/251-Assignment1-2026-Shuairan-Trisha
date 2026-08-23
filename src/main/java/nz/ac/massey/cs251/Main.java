@@ -31,6 +31,8 @@ public class Main extends JFrame{
 
     public Main() {
         super("Text Editor");
+        ConfigLoader config = new ConfigLoader("config.yml");
+
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(Frame_WIDTH, Frame_HEIGHT);
         this.setResizable(true);
@@ -39,14 +41,15 @@ public class Main extends JFrame{
         textArea = new JTextPane();
         this.add(new JScrollPane(textArea));
 
-        textArea.setBackground(new Color(235,245,255));
-        textArea.setForeground(new Color(20,30,50));
-        textArea.setCaretColor(new Color(20, 30, 50));
+        textArea.setFont(new Font(config.fontFamily, Font.PLAIN, config.fontSize));
+        textArea.setBackground(config.textBackground);
+        textArea.setForeground(config.textForeground);
+        textArea.setCaretColor(config.textForeground);
 
         JMenuBar MenuBar = new JMenuBar();
         this.setJMenuBar(MenuBar);
 
-        MenuBar.setBackground(new Color(235, 245, 235));
+        MenuBar.setBackground(config.menuBackground);
         MenuBar.setOpaque(true);
 
         JMenu fileMenu = new JMenu("File");
@@ -55,15 +58,15 @@ public class Main extends JFrame{
         JMenu editMenu = new JMenu("Edit");
         JMenu helpMenu = new JMenu("Help");
 
-        fileMenu.setBackground(new Color(235,245,235));
+        fileMenu.setBackground(config.menuBackground);
         fileMenu.setOpaque(true);
-        searchMenu.setBackground(new Color(235,245,235));
+        searchMenu.setBackground(config.menuBackground);
         searchMenu.setOpaque(true);
-        viewMenu.setBackground(new Color(235,245,235));
+        viewMenu.setBackground(config.menuBackground);
         viewMenu.setOpaque(true);
-        editMenu.setBackground(new Color(235,245,235));
+        editMenu.setBackground(config.menuBackground);
         editMenu.setOpaque(true);
-        helpMenu.setBackground(new Color(235,245,235));
+        helpMenu.setBackground(config.menuBackground);
         helpMenu.setOpaque(true);
         fileMenu.setIcon(scaledIcon("file1.png"));
         searchMenu.setIcon(scaledIcon("search1.png"));
@@ -85,7 +88,7 @@ public class Main extends JFrame{
         JMenuItem paste = new JMenuItem("Paste");
         JMenuItem cut = new JMenuItem("Cut");
         JMenuItem aboutMenu = new JMenuItem("About");
-        aboutMenu.setBackground(new Color(235,245,235));
+        aboutMenu.setBackground(config.menuBackground);
         aboutMenu.setOpaque(true);
         aboutMenu.setIcon(scaledIcon("about1.png"));
         JMenuItem guideItem = new JMenuItem("How to Use");
